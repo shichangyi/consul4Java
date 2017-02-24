@@ -4,12 +4,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ProviderController{
 
+	
+	
+	@Value("${env}")		
+	private String env;
+	@Value("${name}")
+	private String name;
+	@Value("${host}")
+	private String host;
+	
 	private Random rd = new Random();
 	 
 	@GetMapping("/hello")
@@ -18,6 +28,18 @@ public class ProviderController{
 		 map.put("nams", "shicy"+id);
 		 map.put("age", rd.nextInt(100+id) % 100 + id *id);
 		 map.put("id", id * id);
+		 return map;
+	}
+	
+	
+	@GetMapping("/config")
+	public Map<String,Object> getConfig(){
+		 Map<String,Object> map = new  HashMap<String,Object>();
+		
+		 map.put("env", env);
+		 map.put("name", name);
+		 map.put("host", host);
+		 
 		 return map;
 	}
 }
