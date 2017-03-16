@@ -167,6 +167,47 @@ public class HelloController {
         
 	}
     
+    
+    /**
+     * 远程调用，超时重试
+     * @param times
+     * @return
+     */
+    @RequestMapping("/hello/doJob")
+	public Object doJob(Integer times) {
+    	Long bg = System.currentTimeMillis();
+    	Random rd = new Random();
+    	Integer id = rd.nextInt(5);
+    	String url = "http://"+instaceName+"/hello?id="+id;
+    	if(times==null){
+    		times = 10;
+    	}
+    	
+    	String res = null;
+    	for(int r=0;r<times;r++){
+			try{
+				res = restTemplate.getForObject(url, String.class);
+    			break;
+        	}catch (Exception e) {
+        		//重试之后，依然错误
+        		if(r==times-1){
+        			res = "error, retryTimes = " + r;
+        		}
+        		
+    		}
+		}
+    	Long userTime = System.currentTimeMillis() - bg;
+    	Map<String,Object> map = new HashMap<String,Object>();
+    	map.put("res", res);
+    	map.put("url", url);
+    	map.put("userTimes", userTime);
+    
+        return map;  
+        
+	}
+    
+    
+    
  
 	
 }
