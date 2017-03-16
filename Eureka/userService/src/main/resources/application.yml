@@ -1,0 +1,13 @@
+server:
+  port: 28083
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8010/eureka/
+  instance:
+    instance-id: usersiver-${server.port}
+    
+      
+
+
+  
