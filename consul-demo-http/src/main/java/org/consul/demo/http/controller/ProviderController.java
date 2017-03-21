@@ -15,28 +15,22 @@ public class ProviderController {
 	private String name;
 	private String host;
 
+	@Value("${server.address}")
+	private String serverAddress;
+	@Value("${server.port}")
+	private String serverPort;
+	
 	private Random rd = new Random();
 
 	@GetMapping("/hello")
-	public Map<String, Object> getInfo(Integer id) {
+	public Map<String, Object> hello(Integer id) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("nams", "shicy" + id);
 		map.put("age", rd.nextInt(100 + id) % 100 + id * id);
 		map.put("id", id * id);
 		return map;
 	}
-
-	@GetMapping("/config")
-	public Map<String, Object> getConfig() {
-		Map<String, Object> map = new HashMap<String, Object>();
-
-		map.put("env", env);
-		map.put("name", name);
-		map.put("host", host);
-
-		return map;
-	}
-
+	
 	/**
 	 * 模拟一个耗时的任务
 	 * 
@@ -61,7 +55,23 @@ public class ProviderController {
 			e.printStackTrace();
 		}
 		map.put("userTime", System.currentTimeMillis() - bg);
-		
+
+		return map;
+	}
+
+
+
+
+	@GetMapping("/myInfo")
+	public Map<String, Object> getInfo() {
+		//Random rd = new Random(); 
+		//Integer result = rd.nextInt(10); 
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("serverAddress", serverAddress);
+		map.put("serverPort", serverPort);
+		map.put("host", host);
+		//map.put("result", result);
+		System.out.println(System.currentTimeMillis() + " -- map = " + map);
 		return map;
 	}
 
